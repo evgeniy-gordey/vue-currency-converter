@@ -1,6 +1,6 @@
-# vue-currency-converter
+# Vue-currency-converter
 
-> Nuxt.js project
+> Simple modal currency converter on Vue.js (Vue2)
 
 ## Build Setup
 
