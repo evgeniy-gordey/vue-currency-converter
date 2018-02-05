@@ -1,0 +1,57 @@
+.button {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #42b983;
+  text-decoration: none;
+  padding: 7px 15px;
+  transition: box-shadow .05s ease-in,color .05s ease-in;
+  outline: 0;
+
+  &-filled {
+    background: #42b983;
+    color: #fff;
+  }
+
+  &-transparent {
+    background: #fff;
+    color: #42b983;
+
+    &:active {
+      background: #42b983;
+      color: #fff;
+    }
+  }
+
+  &-shadow {
+      box-shadow: 0 0 0 1px rgba(27,74,53,.1), 0 2px 5px 0 rgba(27,74,53,.08),
+                  0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08),
+                  0 0 0 0 transparent;
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(27,74,53,.1), 0 2px 5px 0 rgba(27,74,53,.1),
+                  0 5px 5px 0 rgba(27,74,53,.08), 0 1px 1.5px 0 rgba(0,0,0,.08),
+                  0 1px 2px 0 rgba(0,0,0,.08);
+    }
+
+    &:active {
+      box-shadow: 0 0 0 1px rgba(27,74,53,.08), 0 2px 5px 0 rgba(27,74,53,.06),
+                  0 1px 1.5px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.06),
+                  0 0 0 0 transparent;
+    }
+  }
+
+  &-lg {
+    font-size: 20px;
+    padding: 10px 30px;
+  }
+
+  &-sm {
+    font-size: 13px;
+    padding: 3px 6px;
+  }
+}
