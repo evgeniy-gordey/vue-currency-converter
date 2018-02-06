@@ -6,7 +6,7 @@
       class="currency-modal__wrapper"
       @click.stop>
       <div class="currency-modal__main">
-        <div class="currency-modal__left">
+        <div class="currency-modal__input-wrapper">
           <div class="currency-modal__buttons">
             <button
               class="button"
@@ -25,10 +25,10 @@
             type="text"
             value="0"
             class="currency-modal__input"
-            :class="{'currency-modal__input-active': activeInput == 'value'}"
-            @focus="activeInput = 'value'"
+            :class="{'currency-modal__input-active': activeInput == 'val1'}"
+            @focus="activeInput = 'val1'"
             @input="calculate()"
-            ref="value">
+            ref="val1">
           <div class="currency-modal__rate">1 {{ cur1 }} = {{ rates[cur1][cur2] }} {{ cur2 }}</div>
         </div>
         <div class="currency-modal__arrows-wrapper">
@@ -36,7 +36,7 @@
             class="currency-modal__arrows"
             @click="changeCurrencies" />
         </div>
-        <div class="currency-modal__right">
+        <div class="currency-modal__input-wrapper">
           <div class="currency-modal__buttons">
             <button
               class="button"
@@ -55,10 +55,10 @@
             type="text"
             value="0"
             class="currency-modal__input"
-            :class="{'currency-modal__input-active': activeInput == 'total'}"
-            @focus="activeInput = 'total'"
+            :class="{'currency-modal__input-active': activeInput == 'val2'}"
+            @focus="activeInput = 'val2'"
             @input="calculate()"
-            ref="total">
+            ref="val2">
           <div class="currency-modal__rate">1 {{ cur2 }} = {{ rates[cur2][cur1] }} {{ cur1 }}</div>
         </div>
       </div>
@@ -73,11 +73,11 @@ export default {
     name: 'CurrencyModal',
     data() {
         return {
-            value: '0',
-            total: '0',
+            val1: '0',
+            val2: '0',
             cur1: 'EUR',
             cur2: 'USD',
-            activeInput: 'value'
+            activeInput: 'val1'
         }
     },
     computed: {
@@ -114,12 +114,12 @@ export default {
       calculate() {
         this.validate(this.activeInput)
 
-        if (this.activeInput == 'value') {
-          this.$refs.value.value = this.value
-          this.total = this.$refs.total.value = +(this.value * this.rates[this.cur1][this.cur2]).toFixed(3)
+        if (this.activeInput == 'val1') {
+          this.$refs.val1.value = this.val1
+          this.val2 = this.$refs.val2.value = +(this.val1 * this.rates[this.cur1][this.cur2]).toFixed(3)
         } else {
-          this.$refs.total.value = this.total
-          this.value = this.$refs.value.value = +(this.total / this.rates[this.cur1][this.cur2]).toFixed(3)
+          this.$refs.val2.value = this.val2
+          this.val1 = this.$refs.val1.value = +(this.val2 / this.rates[this.cur1][this.cur2]).toFixed(3)
         }
       },
       changeCurrencies() {
@@ -147,7 +147,6 @@ export default {
         min-height: 100vh;
         padding-top: 200px;
         background-color: rgba(0, 0, 0, .75);
-        display: table;
         transition: opacity .3s ease;
 
         @include breakpoint(phone) {
