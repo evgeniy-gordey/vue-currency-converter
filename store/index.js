@@ -8,11 +8,8 @@ const createStore = () => {
       rates: {}
     },
     mutations: {
-      openCurrencyModal (state) {
-        state.isCurrencyModalOpened = true
-      },
-      closeCurrencyModal (state) {
-        state.isCurrencyModalOpened = false
+      triggerCurrencyModal (state, bool) {
+        bool ? state.isCurrencyModalOpened = true : state.isCurrencyModalOpened = false
       },
       setRates (state, data) {
         state.rates = data
