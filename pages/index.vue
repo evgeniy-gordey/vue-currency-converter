@@ -3,7 +3,7 @@
     <div class="main-page__container">
       <currency-modal
         v-if="$store.state.isCurrencyModalOpened"
-        @close="triggerCurrencyModal(false)" />
+        @close="$store.commit('triggerCurrencyModal', false)" />
       <h1 class="main-page__title">
         Vue-currency-converter
       </h1>
@@ -16,7 +16,7 @@
       <div class="main-page__button-wrapper">
         <button
           target="_blank"
-          @click="triggerCurrencyModal(true)"
+          @click="$store.commit('triggerCurrencyModal', true)"
           class="main-page__button button button-lg button-filled button-shadow">Open converter</button>
       </div>
     </div>
@@ -29,12 +29,6 @@ import CurrencyModal from '~/components/CurrencyModal.vue'
 export default {
   components: {
     CurrencyModal
-  },
-  methods: {
-    triggerCurrencyModal(bool) {
-      this.$store.commit('triggerCurrencyModal', bool)
-      bool ? document.body.className = 'modal-opened' : document.body.className = ''
-    },
   },
   async fetch ({ store, params }) {
     await store.dispatch('getRates');

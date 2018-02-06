@@ -9,7 +9,8 @@ const createStore = () => {
     },
     mutations: {
       triggerCurrencyModal (state, bool) {
-        bool ? state.isCurrencyModalOpened = true : state.isCurrencyModalOpened = false
+        state.isCurrencyModalOpened = bool
+        bool ? document.body.className = 'modal-opened' : document.body.className = ''
       },
       setRates (state, data) {
         state.rates = data
