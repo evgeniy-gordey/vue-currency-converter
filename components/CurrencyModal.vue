@@ -27,7 +27,7 @@
             class="currency-modal__input"
             @input="calculate('value')"
             ref="value">
-          <div class="currency-modal__rate">1 {{ cur1 }} = {{ $store.state.rates[cur1][cur2] }} {{ cur2 }}</div>
+          <div class="currency-modal__rate">1 {{ cur1 }} = {{ rates[cur1][cur2] }} {{ cur2 }}</div>
         </div>
         <div class="currency-modal__arrows-wrapper">
           <div
@@ -55,7 +55,7 @@
             class="currency-modal__input"
             @input="calculate('total')"
             ref="total">
-          <div class="currency-modal__rate">1 {{ cur2 }} = {{ $store.state.rates[cur2][cur1] }} {{ cur1 }}</div>
+          <div class="currency-modal__rate">1 {{ cur2 }} = {{ rates[cur2][cur1] }} {{ cur1 }}</div>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import store from '~/store';
+import { mapState } from 'vuex'
 
 export default {
     name: 'CurrencyModal',
@@ -74,6 +74,11 @@ export default {
             cur1: 'EUR',
             cur2: 'USD'
         }
+    },
+    computed: {
+      ...mapState({
+        rates: state => state.rates
+      })
     },
     mounted() {
       setInterval(() => {
@@ -106,10 +111,10 @@ export default {
 
         if (type == 'value') {
           this.$refs.value.value = this.value
-          this.total = this.$refs.total.value = +(this.value * this.$store.state.rates[this.cur1][this.cur2]).toFixed(3)
+          this.total = this.$refs.total.value = +(this.value * this.rates[this.cur1][this.cur2]).toFixed(3)
         } else {
           this.$refs.total.value = this.total
-          this.value = this.$refs.value.value = +(this.total / this.$store.state.rates[this.cur1][this.cur2]).toFixed(3)
+          this.value = this.$refs.value.value = +(this.total / this.rates[this.cur1][this.cur2]).toFixed(3)
         }
       },
       changeCurrencies() {
