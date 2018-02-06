@@ -6535,10 +6535,6 @@ vue-meta@^1.4.2:
     lodash.isplainobject "^4.0.6"
     object-assign "^4.1.1"
 
-vue-round-filter@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/vue-round-filter/-/vue-round-filter-1.1.2.tgz#f0ddb87bf7a1e3395278aabd217b2583cfcff14e"
-
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"

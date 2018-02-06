@@ -64,13 +64,9 @@
 
 <script>
 import store from '~/store';
-import round from 'vue-round-filter';
 
 export default {
     name: 'CurrencyModal',
-    filters: {
-      round
-    },
     data() {
         return {
             value: '0',
@@ -89,7 +85,10 @@ export default {
         let oldValue = this[type]
         let temp  = this.$refs[type].value
 
+        // Replace ',' to '.' (12,4 => 12.4)
         temp = temp.replace( /,/g, "." )
+
+        // Truncate leading '0'
         temp = temp.replace(/^0+(?!\.|$)/, '')
 
         if (temp[0] == '.') {
@@ -101,8 +100,6 @@ export default {
         } else {
           this[type] = oldValue
         }
-
-
       },
       calculate(type) {
         this.validate(type)
