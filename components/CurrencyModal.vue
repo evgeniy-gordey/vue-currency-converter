@@ -11,15 +11,15 @@
             <button
               class="button"
               :class="{'button-filled': cur1 == 'EUR', 'button-transparent': cur1 != 'EUR'}"
-              @click="cur1 = 'EUR'; calculate('value')">EUR</button>
+              @click="cur1 = 'EUR'; calculate(activeInput)">EUR</button>
             <button
               class="button"
               :class="{'button-filled': cur1 == 'USD', 'button-transparent': cur1 != 'USD'}"
-              @click="cur1 = 'USD'; calculate('value')">USD</button>
+              @click="cur1 = 'USD'; calculate(activeInput)">USD</button>
             <button
               class="button"
               :class="{'button-filled': cur1 == 'RUB', 'button-transparent': cur1 != 'RUB'}"
-              @click="cur1 = 'RUB'; calculate('value')">RUB</button>
+              @click="cur1 = 'RUB'; calculate(activeInput)">RUB</button>
           </div>
           <input
             type="text"
@@ -39,15 +39,15 @@
             <button
               class="button"
               :class="{'button-filled': cur2 == 'EUR', 'button-transparent': cur2 != 'EUR'}"
-              @click="cur2 = 'EUR'; calculate('total')">EUR</button>
+              @click="cur2 = 'EUR'; calculate(activeInput)">EUR</button>
             <button
               class="button"
               :class="{'button-filled': cur2 == 'USD', 'button-transparent': cur2 != 'USD'}"
-              @click="cur2 = 'USD'; calculate('total')">USD</button>
+              @click="cur2 = 'USD'; calculate(activeInput)">USD</button>
             <button
               class="button"
               :class="{'button-filled': cur2 == 'RUB', 'button-transparent': cur2 != 'RUB'}"
-              @click="cur2 = 'RUB'; calculate('total')">RUB</button>
+              @click="cur2 = 'RUB'; calculate(activeInput)">RUB</button>
           </div>
           <input
             type="text"
@@ -72,7 +72,8 @@ export default {
             value: '0',
             total: '0',
             cur1: 'EUR',
-            cur2: 'USD'
+            cur2: 'USD',
+            activeInput: 'value'
         }
     },
     computed: {
@@ -108,6 +109,7 @@ export default {
       },
       calculate(type) {
         this.validate(type)
+        this.activeInput = type
 
         if (type == 'value') {
           this.$refs.value.value = this.value
@@ -119,7 +121,7 @@ export default {
       },
       changeCurrencies() {
         [this.cur1, this.cur2] = [this.cur2, this.cur1]
-        this.calculate()
+        this.calculate(this.activeInput)
       }
     }
 }
