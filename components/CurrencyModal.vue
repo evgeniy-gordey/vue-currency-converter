@@ -11,21 +11,23 @@
             <button
               class="button"
               :class="{'button-filled': cur1 == 'EUR', 'button-transparent': cur1 != 'EUR'}"
-              @click="cur1 = 'EUR'; calculate(activeInput)">EUR</button>
+              @click="cur1 = 'EUR'; calculate()">EUR</button>
             <button
               class="button"
               :class="{'button-filled': cur1 == 'USD', 'button-transparent': cur1 != 'USD'}"
-              @click="cur1 = 'USD'; calculate(activeInput)">USD</button>
+              @click="cur1 = 'USD'; calculate()">USD</button>
             <button
               class="button"
               :class="{'button-filled': cur1 == 'RUB', 'button-transparent': cur1 != 'RUB'}"
-              @click="cur1 = 'RUB'; calculate(activeInput)">RUB</button>
+              @click="cur1 = 'RUB'; calculate()">RUB</button>
           </div>
           <input
             type="text"
             value="0"
             class="currency-modal__input"
-            @input="calculate('value')"
+            :class="{'currency-modal__input-active': activeInput == 'value'}"
+            @click="activeInput = 'value'"
+            @input="calculate()"
             ref="value">
           <div class="currency-modal__rate">1 {{ cur1 }} = {{ rates[cur1][cur2] }} {{ cur2 }}</div>
         </div>
@@ -39,21 +41,23 @@
             <button
               class="button"
               :class="{'button-filled': cur2 == 'EUR', 'button-transparent': cur2 != 'EUR'}"
-              @click="cur2 = 'EUR'; calculate(activeInput)">EUR</button>
+              @click="cur2 = 'EUR'; calculate()">EUR</button>
             <button
               class="button"
               :class="{'button-filled': cur2 == 'USD', 'button-transparent': cur2 != 'USD'}"
-              @click="cur2 = 'USD'; calculate(activeInput)">USD</button>
+              @click="cur2 = 'USD'; calculate()">USD</button>
             <button
               class="button"
               :class="{'button-filled': cur2 == 'RUB', 'button-transparent': cur2 != 'RUB'}"
-              @click="cur2 = 'RUB'; calculate(activeInput)">RUB</button>
+              @click="cur2 = 'RUB'; calculate()">RUB</button>
           </div>
           <input
             type="text"
             value="0"
             class="currency-modal__input"
-            @input="calculate('total')"
+            :class="{'currency-modal__input-active': activeInput == 'total'}"
+            @click="activeInput = 'total'"
+            @input="calculate()"
             ref="total">
           <div class="currency-modal__rate">1 {{ cur2 }} = {{ rates[cur2][cur1] }} {{ cur1 }}</div>
         </div>
@@ -107,11 +111,10 @@ export default {
           this[type] = oldValue
         }
       },
-      calculate(type) {
-        this.validate(type)
-        this.activeInput = type
+      calculate() {
+        this.validate(this.activeInput)
 
-        if (type == 'value') {
+        if (this.activeInput == 'value') {
           this.$refs.value.value = this.value
           this.total = this.$refs.total.value = +(this.value * this.rates[this.cur1][this.cur2]).toFixed(3)
         } else {
@@ -198,6 +201,13 @@ export default {
           outline: none;
           padding: 7px 5px;
           border: 1px solid #cecece;
+
+          &-active {
+            border: 1px solid #42b983;
+            box-shadow: 0 0 0 1px rgba(27,74,53,.1), 0 2px 5px 0 rgba(27,74,53,.08),
+                        0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08),
+                        0 0 0 0 transparent;
+          }
         }
 
         &__buttons {
