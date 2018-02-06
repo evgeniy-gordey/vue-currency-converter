@@ -26,7 +26,7 @@
             value="0"
             class="currency-modal__input"
             :class="{'currency-modal__input-active': activeInput == 'value'}"
-            @click="activeInput = 'value'"
+            @focus="activeInput = 'value'"
             @input="calculate()"
             ref="value">
           <div class="currency-modal__rate">1 {{ cur1 }} = {{ rates[cur1][cur2] }} {{ cur2 }}</div>
@@ -56,7 +56,7 @@
             value="0"
             class="currency-modal__input"
             :class="{'currency-modal__input-active': activeInput == 'total'}"
-            @click="activeInput = 'total'"
+            @focus="activeInput = 'total'"
             @input="calculate()"
             ref="total">
           <div class="currency-modal__rate">1 {{ cur2 }} = {{ rates[cur2][cur1] }} {{ cur1 }}</div>
