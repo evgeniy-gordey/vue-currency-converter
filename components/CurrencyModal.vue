@@ -11,22 +11,22 @@
             <button
               class="button"
               :class="{'button-filled': cur1 == 'EUR', 'button-transparent': cur1 != 'EUR'}"
-              @click="cur1 = 'EUR'; calculate()">EUR</button>
+              @click="cur1 = 'EUR'; calculate('value')">EUR</button>
             <button
               class="button"
               :class="{'button-filled': cur1 == 'USD', 'button-transparent': cur1 != 'USD'}"
-              @click="cur1 = 'USD'; calculate()">USD</button>
+              @click="cur1 = 'USD'; calculate('value')">USD</button>
             <button
               class="button"
               :class="{'button-filled': cur1 == 'RUB', 'button-transparent': cur1 != 'RUB'}"
-              @click="cur1 = 'RUB'; calculate()">RUB</button>
+              @click="cur1 = 'RUB'; calculate('value')">RUB</button>
           </div>
           <input
             type="text"
+            value="0"
             class="currency-modal__input"
-            v-model="value"
-            @input="calculate"
-            @paste="calculate">
+            @input="calculate('value')"
+            ref="value">
           <div class="currency-modal__rate">1 {{ cur1 }} = {{ $store.state.rates[cur1][cur2] }} {{ cur2 }}</div>
         </div>
         <div class="currency-modal__arrows-wrapper">
@@ -39,22 +39,22 @@
             <button
               class="button"
               :class="{'button-filled': cur2 == 'EUR', 'button-transparent': cur2 != 'EUR'}"
-              @click="cur2 = 'EUR'; calculate()">EUR</button>
+              @click="cur2 = 'EUR'; calculate('total')">EUR</button>
             <button
               class="button"
               :class="{'button-filled': cur2 == 'USD', 'button-transparent': cur2 != 'USD'}"
-              @click="cur2 = 'USD'; calculate()">USD</button>
+              @click="cur2 = 'USD'; calculate('total')">USD</button>
             <button
               class="button"
               :class="{'button-filled': cur2 == 'RUB', 'button-transparent': cur2 != 'RUB'}"
-              @click="cur2 = 'RUB'; calculate()">RUB</button>
+              @click="cur2 = 'RUB'; calculate('total')">RUB</button>
           </div>
           <input
             type="text"
+            value="0"
             class="currency-modal__input"
-            v-model="total"
-            @input="calculateReverse"
-            @paste="calculateReverse">
+            @input="calculate('total')"
+            ref="total">
           <div class="currency-modal__rate">1 {{ cur2 }} = {{ $store.state.rates[cur2][cur1] }} {{ cur1 }}</div>
         </div>
       </div>
@@ -85,104 +85,35 @@ export default {
       }, 15000)
     },
     methods: {
-      validate(event) {
-        // Валидация при вставке значения в инпут из клипборда
-        if (event.clipboardData) {
-          event.preventDefault()
+      validate(type) {
+        let oldValue = this[type]
+        let temp  = this.$refs[type].value
 
-          // Временная перемеренная для хранения результата this.value
-          // после вставки строки из клипборда.
-          let clipboard = this.value + event.clipboardData.getData('text')
+        temp = temp.replace( /,/g, "." )
+        temp = temp.replace(/^0+(?!\.|$)/, '')
 
-          // Замена всех запятых в строке на точки (10,6 => 10.6)
-          clipboard = clipboard.replace( /,/g, "." )
+        if (temp[0] == '.') {
+          temp = '0.' + temp.substring(1)
+        }
 
-          // Замена точки в начале строки на '0.' (.123 => 0.123)
-          if (clipboard[0] == '.') {
-            clipboard = '0.' + clipboard.substring(1)
-          }
-
-          if (/^\d+[.,]?\d*$/g.test(clipboard)) {
-            this.value = clipboard
-          }
-        // Валидация значений, печатающихся с клавиатуры.
-        // Функция вызывается при вводе каждого нового символа
+        if ((/^\d+[.]?\d*$/g.test(temp)) || temp == '') {
+          this[type] = temp
         } else {
-          // // Замена первой точки или запятой в начале строки на '0.' (.27 => 0.27)
-          if ((this.value[0] == '.') || (this.value[0] == ',')){
-            this.value = '0.'
-          }
-
-          // Удаление лишних нулей в начале строки (00.123 => 0.123)
-          if ((this.value[0] == 0) && (this.value[1] == 0)) {
-            this.value = this.value.slice(0, -1)
-          }
-
-          // Замена запятой в строке на точку (15,4 => 15.4)
-          if (this.value.slice(-1) == ',') {
-            this.value = this.value.slice(0, -1) + '.'
-          }
-
-          if (!/^\d+[.,]?\d*$/g.test(this.value)) {
-            this.value = this.value.slice(0, -1)
-          }
-
-          // Удаление лишних нулей в начале строки (00 => 0)
-          if ((this.value.length > 1) && (this.value[0] == 0)
-              && (this.value[1] != 0) && this.value[1] != '.'
-              && (this.value[1] != ',')) {
-            this.value = this.value.substring(1)
-          }
+          this[type] = oldValue
         }
+
+
       },
-      validateReverse(event) {
-        // Обратная валидация, вызывается при изменении правого инпута
-        if (event.clipboardData) {
-          event.preventDefault()
+      calculate(type) {
+        this.validate(type)
 
-          let clipboard = this.total + event.clipboardData.getData('text')
-
-          clipboard = clipboard.replace( /,/g, "." )
-
-          if (clipboard[0] == '.') {
-            clipboard = '0.' + clipboard.substring(1)
-          }
-
-          if (/^\d+[.,]?\d*$/g.test(clipboard)) {
-            this.total = clipboard
-          }
+        if (type == 'value') {
+          this.$refs.value.value = this.value
+          this.total = this.$refs.total.value = +(this.value * this.$store.state.rates[this.cur1][this.cur2]).toFixed(3)
         } else {
-          if ((this.total[0] == '.') || (this.total[0] == ',')){
-            this.total = '0.'
-          }
-          if ((this.total[0] == 0) && (this.total[1] == 0)) {
-            this.total = this.total.slice(0, -1)
-          }
-          if (this.total.slice(-1) == ',') {
-            this.total = this.total.slice(0, -1) + '.'
-          }
-          if (!/^\d+[.,]?\d*$/g.test(this.total)) {
-            this.total = this.total.slice(0, -1)
-          }
-          if ((this.total.length > 1) && (this.total[0] == 0) && (this.total[1] != 0)
-          && this.total[1] != '.' && (this.total[1] != ',')) {
-            this.total = this.total.substring(1)
-          }
+          this.$refs.total.value = this.total
+          this.value = this.$refs.value.value = +(this.total / this.$store.state.rates[this.cur1][this.cur2]).toFixed(3)
         }
-      },
-      calculate(event) {
-        if (event) {
-          this.validate(event)
-        }
-        this.value != NaN ? this.total = this.value * this.$store.state.rates[this.cur1][this.cur2] : false
-        this.total = round(this.total, 3)
-      },
-      calculateReverse(event) {
-        if (event) {
-          this.validateReverse(event)
-        }
-        this.total != NaN ? this.value = this.total / this.$store.state.rates[this.cur1][this.cur2] : false
-        this.value = round(this.value, 3)
       },
       changeCurrencies() {
         [this.cur1, this.cur2] = [this.cur2, this.cur1]
@@ -193,7 +124,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import 'assets/scss/buttons';
   @import 'assets/scss/mixins';
 
