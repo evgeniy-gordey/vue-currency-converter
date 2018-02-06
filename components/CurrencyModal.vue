@@ -131,8 +131,6 @@ export default {
   @import 'assets/scss/mixins';
 
     .currency-modal {
-        display: -webkit-flex;
-        display: -ms-flex;
         display: flex;
         justify-content: center;
         position: fixed;
@@ -152,10 +150,7 @@ export default {
         }
 
         &__wrapper {
-            display: -webkit-flex;
-            display: -ms-flex;
             display: flex;
-            -ms-align-items: center;
             align-items: center;
             justify-content: center;
             flex-direction: column;
@@ -183,17 +178,12 @@ export default {
         }
 
         &__main {
-            display: -webkit-flex;
-            display: -ms-flex;
             display: flex;
-            -ms-align-items: center;
             align-items: center;
             justify-content: center;
             padding: 20px;
 
             @include breakpoint(phone) {
-              -webkit-flex-direction: column;
-              -ms-flex-direction: column;
               flex-direction: column;
             }
         }
@@ -201,7 +191,6 @@ export default {
         &__input {
           min-width: 200px;
           font-size: 20px;
-          -webkit-box-shadow: none;
           box-shadow: none;
           border-radius: 4px;
           outline: none;
@@ -210,8 +199,6 @@ export default {
         }
 
         &__buttons {
-          display: -webkit-flex;
-          display: -ms-flex;
           display: flex;
           justify-content: space-between;
           margin-bottom: 15px;

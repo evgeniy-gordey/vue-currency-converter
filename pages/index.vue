@@ -41,14 +41,10 @@ export default {
 
   .main-page {
     min-height: 100vh;
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     justify-content: center;
 
     &__container {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       max-width: 1000px;
       flex-direction: column;
@@ -56,8 +52,6 @@ export default {
     }
 
     &__title {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       text-align: center;
       justify-content: center;
@@ -66,8 +60,6 @@ export default {
     }
 
     &__subtitle {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       text-align: center;
       justify-content: center;
@@ -77,8 +69,6 @@ export default {
     }
 
     &__lorem-ipsum {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       font-size: 16px;
       line-height: 1.5;
@@ -86,8 +76,6 @@ export default {
     }
 
     &__button-wrapper {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       justify-content: center;
       margin-top: 30px;
