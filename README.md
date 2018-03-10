@@ -1,8 +1,12 @@
 # Vue-currency-converter
 
-> Simple modal currency converter on Vue.js (Vue2)
+> Simple modal currency converter on Vue.js (Vue2) + Nuxt
 
-## Build Setup
+## Live demo
+
+https://vue-currency-converter-hmenddeuaa.now.sh/
+
+## Installation
 
 ``` bash
 # install dependencies
@@ -18,5 +22,3 @@ $ npm start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
