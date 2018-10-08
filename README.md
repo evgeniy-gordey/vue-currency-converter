@@ -4,7 +4,7 @@
 
 ## Live demo
 
-https://vue-currency-converter-hmenddeuaa.now.sh/
+https://vue-currency-converter-xertfvczia.now.sh/
 
 ## Installation
 
