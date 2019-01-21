@@ -1,9 +1,7 @@
 <template>
   <section class="main-page">
     <div class="main-page__container">
-      <currency-modal
-        v-if="$store.state.isCurrencyModalOpened"
-        @close="$store.commit('triggerCurrencyModal', false)" />
+      <currency-converter />
       <h1 class="main-page__title">
         Vue-currency-converter
       </h1>
@@ -15,24 +13,26 @@
       </div>
       <div class="main-page__button-wrapper">
         <button
-          target="_blank"
-          @click="$store.commit('triggerCurrencyModal', true)"
-          class="main-page__button button button-lg button-filled button-shadow">Open converter</button>
+          class="main-page__button button button-lg button-filled button-shadow"
+          @click="openModal()">Open converter</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import CurrencyModal from '~/components/CurrencyModal.vue'
+import { mapGetters, mapMutations } from 'vuex'
+import CurrencyConverter from '~/components/CurrencyConverter.vue'
 
 export default {
   components: {
-    CurrencyModal
+    CurrencyConverter
   },
-  async fetch ({ store, params }) {
-    await store.dispatch('getRates');
-  }
+  async fetch ({ store: { dispatch } }) {
+    await dispatch('getRates');
+  },
+  computed: mapGetters(['isModalOpened']),
+  methods: mapMutations(['openModal', 'closeModal'])
 }
 </script>
 
