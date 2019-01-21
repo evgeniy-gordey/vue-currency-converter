@@ -3,18 +3,12 @@
     <div class="currency-converter__main">
       <div class="currency-converter__input-wrapper">
         <div class="currency-converter__buttons">
-          <button
-            :class="{'button-filled': cur1 == 'EUR', 'button-transparent': cur1 != 'EUR'}"
-            class="button"
-            @click="cur1 = 'EUR'; calculate()">EUR</button>
-          <button
-            :class="{'button-filled': cur1 == 'USD', 'button-transparent': cur1 != 'USD'}"
-            class="button"
-            @click="cur1 = 'USD'; calculate()">USD</button>
-          <button
-            :class="{'button-filled': cur1 == 'RUB', 'button-transparent': cur1 != 'RUB'}"
-            class="button"
-            @click="cur1 = 'RUB'; calculate()">RUB</button>
+          <CurrencyButton
+            v-for="currency in currencies"
+            :key="currency"
+            :name="currency"
+            :active-currency="cur1"
+            @click.native="handleButtonClick('left', currency)" />
         </div>
         <input
           ref="val1"
@@ -33,18 +27,12 @@
       </div>
       <div class="currency-converter__input-wrapper">
         <div class="currency-converter__buttons">
-          <button
-            :class="{'button-filled': cur2 == 'EUR', 'button-transparent': cur2 != 'EUR'}"
-            class="button"
-            @click="cur2 = 'EUR'; calculate()">EUR</button>
-          <button
-            :class="{'button-filled': cur2 == 'USD', 'button-transparent': cur2 != 'USD'}"
-            class="button"
-            @click="cur2 = 'USD'; calculate()">USD</button>
-          <button
-            :class="{'button-filled': cur2 == 'RUB', 'button-transparent': cur2 != 'RUB'}"
-            class="button"
-            @click="cur2 = 'RUB'; calculate()">RUB</button>
+          <CurrencyButton
+            v-for="currency in currencies"
+            :key="currency"
+            :name="currency"
+            :active-currency="cur2"
+            @click.native="handleButtonClick('right', currency)" />
         </div>
         <input
           ref="val2"
@@ -63,11 +51,13 @@
 <script>
 import { mapState } from 'vuex'
 import Modal from '~/components/Modal.vue'
+import CurrencyButton from '~/components/CurrencyButton.vue'
 
 export default {
     name: 'CurrencyConverter',
     components: {
-      Modal
+      Modal,
+      CurrencyButton
     },
     data() {
         return {
@@ -79,9 +69,10 @@ export default {
         }
     },
     computed: {
-      ...mapState({
-        rates: state => state.rates
-      })
+      ...mapState(['rates']),
+      currencies() {
+        return Object.keys(this.rates)
+      }
     },
     mounted() {
       setInterval(() => {
@@ -120,6 +111,10 @@ export default {
           this.val1 = this.$refs.val1.value = +(this.val2 / this.rates[this.cur1][this.cur2]).toFixed(3)
         }
       },
+      handleButtonClick(side, currency) {
+        side == 'left' ? this.cur1 = currency : this.cur2 = currency
+        this.calculate()
+      },
       changeCurrencies() {
         [this.cur1, this.cur2] = [this.cur2, this.cur1]
         this.calculate(this.activeInput)
@@ -130,7 +125,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'assets/scss/buttons';
   @import 'assets/scss/mixins';
 
     .currency-converter {
